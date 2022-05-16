@@ -20,7 +20,6 @@ const Inlog = () => {
   const [submitting, setSubmitting] = useState(false);
   const [errMessage, setErrMessage] = useState('');
 
-
   useUser({ redirectTo: '/overzicht', redirectIfFound: true });
 
   const form = useForm({
@@ -56,8 +55,7 @@ const Inlog = () => {
       <Center>
         <Paper shadow="sm" p="lg" withBorder={true} style={{ width: ' 40rem' }}>
           <Center>
-
-          <Title>Welkom</Title>
+            <Title>Welkom</Title>
           </Center>
           {errMessage || 'nog geen fouten gemaakt'}
           <Space h="lg" />
@@ -80,7 +78,9 @@ const Inlog = () => {
             />
             <Space h="lg" />
             <Group position="right">
-              <Button type="submit" loading={submitting}>Inloggen</Button>
+              <Button type="submit" loading={submitting}>
+                Inloggen
+              </Button>
             </Group>
           </form>
         </Paper>
