@@ -1,8 +1,11 @@
-import { AppShell } from '@mantine/core';
+import { AppShell, Button } from '@mantine/core';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import React, { FC } from 'react';
 
 const PageContainer: FC<any> = (props) => {
+  const router = useRouter();
+
   const { children, ...customMeta } = props;
 
   // Meta beschrijvingen voor SEO
@@ -27,7 +30,15 @@ const PageContainer: FC<any> = (props) => {
         <meta name="twitter:title" content={meta.title} />
         <meta name="twitter:description" content={meta.description} />
       </Head>
-      <AppShell>{children}</AppShell>
+
+      {router.pathname === '/' && '/overzicht' ? (
+        <AppShell>{children}</AppShell>
+      ) : (
+        <AppShell>
+          <Button onClick={() => history.back()}>Terug</Button>
+          {children}
+        </AppShell>
+      )}
     </>
   );
 };
