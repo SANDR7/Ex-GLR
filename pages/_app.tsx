@@ -28,7 +28,8 @@ function MyApp({ Component, pageProps }: AppProps) {
         withNormalizeCSS={true}
         theme={{
           fontFamily: 'sans-serif',
-          colorScheme
+          colorScheme,
+          primaryColor: 'green'
         }}
       >
         <ModalsProvider>

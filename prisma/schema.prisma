@@ -6,6 +6,14 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model accounts {
+  ID String @id @default(cuid())
+  email String @unique
+  wachtwoord String 
+  rol String @default("STUDENT")
+}
+

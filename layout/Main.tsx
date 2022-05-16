@@ -5,9 +5,10 @@ import React, { FC } from 'react';
 const PageContainer: FC<any> = (props) => {
   const { children, ...customMeta } = props;
 
+  // Meta beschrijvingen voor SEO
   const meta = {
-    title: `Next Prisma - template`,
-    description: 'Authentication app that combines front-end & back-end',
+    title: `GLR - Ga Lekker Reizen`,
+    description: 'Examen applicatie voor reisbureau GLR',
     type: 'website',
     ...customMeta
   };
