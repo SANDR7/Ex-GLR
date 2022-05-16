@@ -59,6 +59,11 @@ const Overzicht = ({ plaatsen }: { plaatsen: reizen[] }) => {
         {plaatsen?.map((plaats: reizen) => (
           <Card key={plaats.ID}>
             <Title>{plaats.titel}</Title>
+            <Stack py="lg">
+              <Text size="sm" style={{ width: '80%' }}>
+                {plaats.omschrijving}
+              </Text>
+            </Stack>
           </Card>
         ))}
       </Center>
@@ -68,22 +73,26 @@ const Overzicht = ({ plaatsen }: { plaatsen: reizen[] }) => {
 
 export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
   async ({ req, res }) => {
-    // const user = req.session.user;
-    if (!req.session?.isLoggedIn) {
+    const user = req.session.user;
+    if (user === undefined) {
       LOGGER.warn('gebruiker niet geautoriseerd om pagina te bezoeken');
       return {
         props: {}
       };
     }
 
-      const plaatsen = await prisma.accounts.findMany();
+    const plaatsen = await prisma.reizen.findMany({
+      select: {
+        titel: true,
+        ID: true,
+        omschrijving: true,
+      }
+    });
 
-      console.table(plaatsen);
 
-      return {
-        props: { plaatsen } as any
-      };
-    }
+    return {
+      props: { plaatsen } as any
+    };
   },
   sessionOptions
 );
