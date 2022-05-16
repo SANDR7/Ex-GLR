@@ -85,10 +85,9 @@ export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
       select: {
         titel: true,
         ID: true,
-        omschrijving: true,
+        omschrijving: true
       }
     });
-
 
     return {
       props: { plaatsen } as any
