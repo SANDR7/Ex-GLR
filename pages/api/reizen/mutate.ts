@@ -39,9 +39,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     return res.status(200).json({ ok: true });
   }
 
-  if (req.method === 'POST') {
-      console.log(user.ID);
-      
+  if (req.method === 'POST') {      
     if (m === 'createReis') {
       try {        
         await prisma.administrator.update({

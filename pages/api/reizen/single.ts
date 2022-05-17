@@ -13,9 +13,15 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   if (req.session.user) {
     if (req.method === 'GET') {
-      //   LOGGER.info();
+        LOGGER.info(`reis met id: ${id} opgehaald uit database`);
 
+      const plaats = await prisma.reizen.findUnique({
+        where: {
+          ID: id as string,
+        }
+      })
 
+      res.status(200).json({plaats, ok: true})
     }
 
      if (req.method === 'DELETE') {

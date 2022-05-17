@@ -71,7 +71,7 @@ const Overzicht = () => {
                 {/* checken of gebruiker de juiste rechten heeft */}
                 {user?.userSession?.rol === 'STUDENT' ? (
                   // Rechten voor Student
-                  <Link href={`reis/${slugifyTitle}`} passHref={true}>
+                  <Link href={`reis/${plaats.ID}`} passHref={true}>
                     <Button component="a" size="sm">
                       Meer informatie
                     </Button>
@@ -80,7 +80,7 @@ const Overzicht = () => {
                   // Rechten voor Admin
                   <Group position="apart">
                     <Group>
-                      <Link href={`reis/${slugifyTitle}`} passHref={true}>
+                      <Link href={`reis/${plaats.ID}`} passHref={true}>
                         <Button component="a" size="sm">
                           Meer informatie
                         </Button>
