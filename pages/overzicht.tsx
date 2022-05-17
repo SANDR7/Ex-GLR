@@ -25,8 +25,6 @@ const Overzicht = () => {
     redirectIfFound: false
   });
 
-  
-
   // gegevens ophalen van database
   // gegevens worden client side gerenderd vanwege de datum format
   const { data: plaatsen } = useSWR('/api/reizen');
@@ -37,7 +35,7 @@ const Overzicht = () => {
   return (
     <PageContainer>
       <Center>
-        <Stack >
+        <Stack>
           <Title order={1}>Reizen overzicht</Title>
           {userRole?.userSession.rol === 'ADMIN' && (
             <Link href={`/reis/toevoegen`} passHref={true}>

@@ -20,8 +20,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     max,
     begin,
     end
-  }: { title: string; description: string; destination: string; max: number; begin: string; end: string } =
-    req.body;
+  }: {
+    title: string;
+    description: string;
+    destination: string;
+    max: number;
+    begin: string;
+    end: string;
+  } = req.body;
 
   const { id } = req.query;
   if (!user || user?.isLoggedIn === false || !m) {
@@ -47,7 +53,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             bestemming: destination,
             maxAantal: max,
             beginDatum: begin,
-            eindDatum: end,
+            eindDatum: end
           }
         });
 

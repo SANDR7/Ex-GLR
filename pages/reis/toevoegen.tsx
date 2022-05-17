@@ -31,7 +31,7 @@ const Aanmaken = () => {
       destination: '',
       max: '',
       begin: '',
-      end:''
+      end: ''
     }
   }) as any;
 

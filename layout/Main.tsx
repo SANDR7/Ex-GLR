@@ -24,8 +24,6 @@ const PageContainer: FC<any> = (props) => {
     await axios.post('/api/auth/logout');
     router.push('/inlog');
   };
-  
-  
 
   return (
     <>
@@ -62,10 +60,10 @@ const PageContainer: FC<any> = (props) => {
               <Header height={60} px=" 10rem">
                 <Group position="apart" align="center" style={{ height: 60 }}>
                   {/* <Group> */}
-                    <Button onClick={() => history.back()} color="dark">
-                      Terug
-                    </Button>
-                    <Button onClick={processLogout}>Logout</Button>
+                  <Button onClick={() => history.back()} color="dark">
+                    Terug
+                  </Button>
+                  <Button onClick={processLogout}>Logout</Button>
                   {/* </Group> */}
                 </Group>
               </Header>
