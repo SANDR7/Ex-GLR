@@ -29,7 +29,21 @@ function MyApp({ Component, pageProps }: AppProps) {
         theme={{
           fontFamily: 'sans-serif',
           colorScheme,
-          primaryColor: 'green'
+          colors: {
+            glr: [
+              '#EFFED8',
+              '#DFFDB0',
+              '#C7FB74',
+              '#AFF939',
+              '#9FF812',
+              '#8FE507',
+              '#8fe507',
+              '#7CC606',
+              '#70B206',
+              '#639D06'
+            ]
+          },
+          primaryColor: 'glr'
         }}
       >
         <ModalsProvider>
