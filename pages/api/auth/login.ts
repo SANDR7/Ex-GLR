@@ -15,11 +15,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     return res.status(405).json({ message: 'Ongeldig verzoek' });
   }
 
-  const { email, password } : {email: string, password: string} = req.body;
+  const { email, password }: { email: string; password: string } = req.body;
 
   const loggedInUser = await prisma.accounts.findFirst({
     where: { email, wachtwoord: password },
-    select: { ID: true}
+    select: { ID: true }
   });
   try {
     const findUser = await prisma.accounts.findFirst({

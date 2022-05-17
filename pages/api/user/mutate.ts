@@ -50,7 +50,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           admin: { select: { naam: true } }
         }
       });
-      
+
       return res.json({ userSession, ok: true });
     }
 
@@ -60,7 +60,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   if (req.method === 'POST') {
-
     return res.status(200).json({ ok: true });
   }
 

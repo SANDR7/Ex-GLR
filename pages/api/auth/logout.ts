@@ -12,7 +12,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   if (req.session.user) {
     LOGGER.info('Gebruiker is uitgelogd');
-    
+
     req.session.destroy();
     res.json({ isLoggedIn: false, login: '' });
   }

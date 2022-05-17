@@ -13,47 +13,46 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   if (req.session.user) {
     if (req.method === 'GET') {
-        LOGGER.info(`reis met id: ${id} opgehaald uit database`);
+      LOGGER.info(`reis met id: ${id} opgehaald uit database`);
 
       const plaats = await prisma.reizen.findUnique({
         where: {
-          ID: id as string,
+          ID: id as string
         },
         include: {
           createdBy: {
             select: {
-              naam: true,
+              naam: true
             }
           },
-        
+
           _count: {
             select: {
-              aanmeldingen: true,
+              aanmeldingen: true
             }
           },
           aanmeldingen: {
             select: {
-              naam: true,
+              naam: true
             }
           }
         }
-      })
+      });
 
-      res.status(200).json({plaats, ok: true})
+      res.status(200).json({ plaats, ok: true });
     }
 
-     if (req.method === 'DELETE') {
-         LOGGER.info("Reis successvol verwijderd");
+    if (req.method === 'DELETE') {
+      LOGGER.info('Reis successvol verwijderd');
 
-       await prisma.reizen.delete({
-           where: {
-               ID: id as string
-           }
-       });
+      await prisma.reizen.delete({
+        where: {
+          ID: id as string
+        }
+      });
 
-       return res.status(200).json({ok: true})
-
-     }
+      return res.status(200).json({ ok: true });
+    }
   } else {
     return res.status(500).json({
       isLoggedIn: false
