@@ -60,9 +60,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   if (req.method === 'POST') {
-    if (m === 'createPost') {
-      // create post logic
-    }
 
     return res.status(200).json({ ok: true });
   }

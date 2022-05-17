@@ -30,13 +30,15 @@ const Inlog = () => {
     },
 
     validate: {
-      // email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email')
+      email: (value) =>
+        /^\S+@\S+$/.test(value) ? null : 'onjuist email formaat'
     }
   });
 
   // Formulier verwerken
   const processForm = async (values: any, event: React.FormEvent<Element>) => {
     event.preventDefault();
+    // verzoek om gebruiker in te loggen
     await axios.post('api/auth/login', values).then((res) => {
       const { ok, message } = res.data;
 

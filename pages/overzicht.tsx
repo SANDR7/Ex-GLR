@@ -15,7 +15,6 @@ import {
 import { reizen } from '.prisma/client';
 import dayjs from 'dayjs';
 import Link from 'next/link';
-import { string_to_slug } from '@/lib/functions';
 import axios from 'axios';
 import Router from 'next/router';
 
@@ -38,7 +37,7 @@ const Overzicht = () => {
   return (
     <PageContainer>
       <Center>
-        <Stack style={{ width: '40%' }}>
+        <Stack >
           <Title order={1}>Reizen overzicht</Title>
           {userRole?.userSession.rol === 'ADMIN' && (
             <Link href={`/reis/toevoegen`} passHref={true}>
@@ -52,8 +51,6 @@ const Overzicht = () => {
             // Tijden formateren
             const beginDate = dayjs(plaats.beginDatum).format('DD MMM YY');
             const endDate = dayjs(plaats.eindDatum).format('DD MMM YY');
-
-            const slugifyTitle = string_to_slug(plaats.titel);
 
             return (
               // algemene informatie over reis

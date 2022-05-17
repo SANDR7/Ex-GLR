@@ -13,12 +13,12 @@ datasource db {
 // Tussentabel
 // Voor authenticeren
 model accounts {
-  ID         String         @id @default(cuid())
-  email      String         @unique
+  ID         String          @id @default(cuid())
+  email      String          @unique
   wachtwoord String
-  student    studenten?
-  admin      administrator?
-  rol        String         @default("STUDENT")
+  student    studenten[]
+  admin      administrator[]
+  rol        String          @default("STUDENT")
 }
 
 model administrator {
@@ -31,16 +31,17 @@ model administrator {
 }
 
 model studenten {
-  ID        String    @id @default(cuid())
-  accountID accounts  @relation(fields: [studentID], references: [ID])
-  studentID String    @unique
-  geboekt   geboekt[]
+  ID        String   @id @default(cuid())
+  accountID accounts @relation(fields: [studentID], references: [ID])
+  studentID String   @unique
+  reizen    reizen[]
 
   naam                    String
-  studentNummer           Int    @map("student_nummer")
-  boekingsNummer          Int    @map("boekingsnummer")
-  NummerIdentiteitsbewijs Int    @map("identiteits_bewijs")
+  studentNummer           Int     @map("student_nummer")
+  boekingsNummer          Int     @map("boekingsnummer")
+  NummerIdentiteitsbewijs Int     @map("identiteits_bewijs")
   Opmerkingen             String?
+  reizenID                String?
 }
 
 // Reis tabel
@@ -48,23 +49,12 @@ model reizen {
   ID              String        @id @default(cuid())
   createdBy       administrator @relation(fields: [administratorID], references: [ID])
   administratorID String
-  geboekt         geboekt[]
+  aanmeldingen    studenten[]
 
   titel        String
   bestemming   String
-  omschrijving String? 
+  omschrijving String?
   beginDatum   DateTime @map("begin_datum")
   eindDatum    DateTime @map("eind_datum")
-  maxAantal    Int      @map("max_aantal")
-}
-
-// Tussentabel
-// Voor geboekte reizen
-model geboekt {
-  ID        String     @id @default(cuid())
-  reisID    reizen?    @relation(fields: [reizenID], references: [ID])
-  studentID studenten? @relation(fields: [studentenID], references: [ID])
-
-  reizenID    String?
-  studentenID String?
+  maxAantal    Int      @map("max_aantal") @default(1)
 }
