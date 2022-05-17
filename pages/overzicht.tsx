@@ -1,8 +1,5 @@
 import PageContainer from '@/layout/Main';
 import { reizen } from '.prisma/client';
-import logger from '@/lib/logger';
-import prisma from '@/lib/prisma';
-import { sessionOptions } from '@/lib/session';
 import useUser from '@/lib/useUser';
 import {
   Badge,
@@ -17,28 +14,19 @@ import {
 import { withIronSessionSsr } from 'iron-session/next';
 import ErrorPage from 'next/error';
 import React from 'react';
-import { GetServerSideProps } from 'next';
+import useSWR from 'swr';
 
-const LOGGER = logger(import.meta.url);
-
-const Overzicht = ({ plaatsen }: { plaatsen: reizen[] }) => {
-  console.log(plaatsen);
-
-  const { user } = useUser({
+const Overzicht = () => {
+  useUser({
     redirectTo: '/inlog',
     redirectIfFound: false
   });
 
-  //   Er voor zorgen dat gebruikers zonder account de pagina niet kunnen bekijken.
-  if (!user) {
-    console.error('gebruiker niet geautoriseerd om pagina te bezoeken');
-    return (
-      <ErrorPage
-        statusCode={403} // Verboden toegang
-        title="Je niet geautoriseerd om pagina te bezoeken"
-      />
-    );
-  }
+  // gegevens ophalen van database
+  const { data: plaatsen } = useSWR('/api/reizen');
+
+  console.log(plaatsen);
+
   // Pagina wanneer er een account is geconstateerd.
   return (
     <PageContainer>
@@ -55,7 +43,7 @@ const Overzicht = ({ plaatsen }: { plaatsen: reizen[] }) => {
           </Stack>
           <Button>Book classic tour now</Button>
         </Card>
-
+        {/* gegevens van database weergeven */}
         {plaatsen?.map((plaats: reizen) => (
           <Card key={plaats.ID}>
             <Title>{plaats.titel}</Title>
@@ -70,30 +58,5 @@ const Overzicht = ({ plaatsen }: { plaatsen: reizen[] }) => {
     </PageContainer>
   );
 };
-
-export const getServerSideProps: GetServerSideProps = withIronSessionSsr(
-  async ({ req, res }) => {
-    const user = req.session.user;
-    if (user === undefined) {
-      LOGGER.warn('gebruiker niet geautoriseerd om pagina te bezoeken');
-      return {
-        props: {}
-      };
-    }
-
-    const plaatsen = await prisma.reizen.findMany({
-      select: {
-        titel: true,
-        ID: true,
-        omschrijving: true
-      }
-    });
-
-    return {
-      props: { plaatsen } as any
-    };
-  },
-  sessionOptions
-);
 
 export default Overzicht;
