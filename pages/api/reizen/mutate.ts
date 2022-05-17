@@ -17,8 +17,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     title,
     description,
     destination,
-    max
-  }: { title: string; description: string; destination: string; max: number } =
+    max,
+    begin,
+    end
+  }: { title: string; description: string; destination: string; max: number; begin: string; end: string } =
     req.body;
 
   const { id } = req.query;
@@ -43,7 +45,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             titel: title,
             omschrijving: description,
             bestemming: destination,
-            maxAantal: max
+            maxAantal: max,
+            beginDatum: begin,
+            eindDatum: end,
           }
         });
 
@@ -78,9 +82,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
                   maxAantal: max,
                   bestemming: destination,
                   omschrijving: description,
-                  huidigAantal: 0,
-                  beginDatum: '1970-01-01T00:00:00.000Z',
-                  eindDatum: '1970-01-01T00:00:00.000Z'
+                  beginDatum: begin,
+                  eindDatum: end
                 },
                 where: {
                   ID: user.ID

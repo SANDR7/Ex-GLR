@@ -18,6 +18,7 @@ import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
 import React from 'react';
 import Router from 'next/router';
+import { DatePicker } from '@mantine/dates';
 
 const Aanpassen = ({ plaats }: { plaats: reizen }) => {
   const form = useForm({
@@ -25,7 +26,9 @@ const Aanpassen = ({ plaats }: { plaats: reizen }) => {
       title: plaats.titel,
       description: plaats.omschrijving,
       destination: plaats.bestemming,
-      max: plaats.maxAantal
+      max: plaats.maxAantal,
+      begin: plaats.beginDatum,
+      end: plaats.eindDatum
     }
   }) as any;
 
@@ -51,7 +54,7 @@ const Aanpassen = ({ plaats }: { plaats: reizen }) => {
     <PageContainer>
       <Center>
         <Stack style={{ width: '40%' }}>
-          <Title order={1}>Reis Toevoegen</Title>
+          <Title order={1}>Reis Aanpassen</Title>
 
           <form onSubmit={form.onSubmit(processForm)}>
             <TextInput
@@ -74,9 +77,19 @@ const Aanpassen = ({ plaats }: { plaats: reizen }) => {
               required={true}
               {...form.getInputProps('max')}
             />
+            <DatePicker
+              label="Start datum"
+              required={true}
+              {...form.getInputProps('begin')}
+            />
+            <DatePicker
+              label="Eind datum"
+              required={true}
+              {...form.getInputProps('end')}
+            />
 
             <Group position="right" py="lg">
-              <Button type="submit">Reis Toevoegen</Button>
+              <Button type="submit">Reis Aanpassen</Button>
             </Group>
           </form>
         </Stack>

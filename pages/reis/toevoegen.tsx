@@ -1,15 +1,16 @@
 import PageContainer from '@/layout/Main';
 import useUser from '@/lib/useUser';
 import {
+  Button,
   Center,
+  Group,
   NumberInput,
   Stack,
   Textarea,
   TextInput,
-  Title,
-  Group,
-  Button
+  Title
 } from '@mantine/core';
+import { DatePicker } from '@mantine/dates';
 import { useForm } from '@mantine/hooks';
 import axios from 'axios';
 import Router from 'next/router';
@@ -18,23 +19,23 @@ import React, { useState } from 'react';
 const Aanmaken = () => {
   const [submitting, setSubmitting] = useState(false);
 
-  const {user} = useUser({
+  useUser({
     redirectTo: '/inlog',
     redirectIfFound: false
   });
-  
 
   const form = useForm({
     initialValues: {
       title: '',
       description: '',
       destination: '',
-      max: ''
+      max: '',
+      begin: '',
+      end:''
     }
   }) as any;
 
   const processForm = async (values: any, event: React.FormEvent) => {
-
     await axios.post('/api/reizen/mutate?m=createReis', values).then((res) => {
       const { ok, message } = res.data;
 
@@ -45,8 +46,6 @@ const Aanmaken = () => {
         Router.push('/overzicht');
       } else {
         setSubmitting(false);
-        console.log(message);
-
         // setErrMessage(message);
       }
     });
@@ -78,6 +77,17 @@ const Aanmaken = () => {
               label="Maximum aantal"
               required={true}
               {...form.getInputProps('max')}
+            />
+
+            <DatePicker
+              label="Start datum"
+              required={true}
+              {...form.getInputProps('begin')}
+            />
+            <DatePicker
+              label="Eind datum"
+              required={true}
+              {...form.getInputProps('end')}
             />
 
             <Group position="right" py="lg">
