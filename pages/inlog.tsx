@@ -6,6 +6,7 @@ import {
   Center,
   Group,
   Paper,
+  Alert,
   PasswordInput,
   Space,
   TextInput,
@@ -41,6 +42,7 @@ const Inlog = () => {
 
       setSubmitting(true);
 
+      // Wanneer ok === true is wordt er redirect naar reizen overzicht
       if (ok) {
         Router.push('/overzicht');
       } else {
@@ -52,12 +54,17 @@ const Inlog = () => {
 
   return (
     <PageContainer title="GLR - Inloggen">
-      <Center>
+      <Center mt="10rem">
         <Paper shadow="sm" p="lg" withBorder={true} style={{ width: ' 40rem' }}>
           <Center>
             <Title>Welkom</Title>
           </Center>
-          {errMessage || 'nog geen fouten gemaakt'}
+          {/* Als er een error komt wordt het weer gegeven */}
+          {errMessage && (
+            <Alert title="Inlog fout" color="red">
+              {errMessage}
+            </Alert>
+          )}
           <Space h="lg" />
           <form onSubmit={form.onSubmit(processForm)}>
             <TextInput

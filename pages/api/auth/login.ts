@@ -36,9 +36,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     // wanneer er geen gebuiker is gevonden geen sessie mee
     if (!findUser) {
-      LOGGER.error('Geen data gevonden');
+      LOGGER.error(`Onbekend account: ${email}`);
       return res.json({
-        message: `Geen account met email: ${email} gevonden`,
+        message: `Geen account met email: ${email}`,
         ok: false
       });
     }
