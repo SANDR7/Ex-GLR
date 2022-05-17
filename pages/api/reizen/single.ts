@@ -18,6 +18,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       const plaats = await prisma.reizen.findUnique({
         where: {
           ID: id as string,
+        },
+        include: {
+          createdBy: {
+            select: {
+              naam: true,
+            }
+          }
         }
       })
 
