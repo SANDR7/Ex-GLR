@@ -1,59 +1,96 @@
 import PageContainer from '@/layout/Main';
-import { reizen } from '.prisma/client';
 import useUser from '@/lib/useUser';
+import React from 'react';
+import useSWR from 'swr';
 import {
   Badge,
   Button,
   Card,
   Center,
-  Text,
+  Group,
   Stack,
-  Title,
-  Group
+  Text,
+  Title
 } from '@mantine/core';
-import { withIronSessionSsr } from 'iron-session/next';
-import ErrorPage from 'next/error';
-import React from 'react';
-import useSWR from 'swr';
+import { reizen } from '.prisma/client';
+import dayjs from 'dayjs';
+import Link from 'next/link';
+import { string_to_slug } from '@/lib/functions';
 
 const Overzicht = () => {
+  // redirect gebruiker wanneer er is ingelogd
   useUser({
     redirectTo: '/inlog',
     redirectIfFound: false
   });
 
   // gegevens ophalen van database
+  // gegevens worden client side gerenderd vanwege de datum format
   const { data: plaatsen } = useSWR('/api/reizen');
 
-  console.log(plaatsen);
+  const { data: user } = useSWR('/api/user/mutate?m=withRole');
 
   // Pagina wanneer er een account is geconstateerd.
   return (
     <PageContainer>
       <Center>
-        <Card withBorder={true}>
-          <Title>Reis naam</Title>
-          <Badge>Bestemming</Badge>
-          <Stack py="lg">
-            <Text size="sm" style={{ width: '80%' }}>
-              With Fjord Tours you can explore more of the magical fjord
-              landscapes with tours and activities on and around the fjords of
-              Norway
-            </Text>
-          </Stack>
-          <Button>Book classic tour now</Button>
-        </Card>
-        {/* gegevens van database weergeven */}
-        {plaatsen?.map((plaats: reizen) => (
-          <Card key={plaats.ID}>
-            <Title>{plaats.titel}</Title>
-            <Stack py="lg">
-              <Text size="sm" style={{ width: '80%' }}>
-                {plaats.omschrijving}
-              </Text>
-            </Stack>
-          </Card>
-        ))}
+        <Stack style={{ width: '40%' }}>
+          {/* gegevens van database weergeven */}
+          {plaatsen?.map((plaats: reizen) => {
+            // Tijden formateren
+            const beginDate = dayjs(plaats.beginDatum).format('DD MMM YY');
+            const endDate = dayjs(plaats.eindDatum).format('DD MMM YY');
+
+            const slugifyTitle = string_to_slug(plaats.titel);
+
+            return (
+              // algemene informatie over reis
+              <Card key={plaats.ID} withBorder={true}>
+                <Group position="apart">
+                  <Title>{plaats.titel}</Title>
+                  <Text>
+                    {beginDate} - {endDate}
+                  </Text>
+                </Group>
+                <Badge>{plaats.bestemming}</Badge>
+                <Stack py="lg">
+                  <Text size="sm" style={{ width: '80%' }}>
+                    {plaats.omschrijving}
+                  </Text>
+                </Stack>
+                {/* checken of gebruiker de juiste rechten heeft */}
+                {user.userSession?.rol === 'STUDENT' ? (
+                  // Rechten voor Student
+                  <Link href={`reis/${slugifyTitle}`} passHref={true}>
+                    <Button component="a" size="sm">
+                      Meer informatie
+                    </Button>
+                  </Link>
+                ) : (
+                  // Rechten voor Admin
+                  <Group position="apart">
+                    <Group>
+                      <Link href={`reis/${slugifyTitle}`} passHref={true}>
+                        <Button component="a" size="sm">
+                          Meer informatie
+                        </Button>
+                      </Link>
+                    </Group>
+
+                    <Group position="right">
+                      <Button size="sm" color="blue">
+                        aanpassen
+                      </Button>
+                      <Button size="sm" color="red">
+                        verwijderen
+                      </Button>
+                    </Group>
+                  </Group>
+                )}
+              </Card>
+            );
+          })}
+        </Stack>
       </Center>
     </PageContainer>
   );
