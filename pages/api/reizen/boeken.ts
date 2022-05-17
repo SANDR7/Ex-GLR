@@ -9,33 +9,64 @@ const LOGGER = logger(import.meta.url);
 export default withIronSessionApiRoute(handler, sessionOptions);
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  let aantal = 0;
   const { email, reisID } = req.body;
+
+  const user = req.session.user;
 
   if (req.session.user) {
     if (req.method === 'PUT') {
       const aanmelding = await prisma.accounts.findUnique({
         where: { email },
         select: {
-            ID:true,
+          ID: true
         }
       });
 
-      await prisma.reizen.update({
+      const aanmeldingsgegevens = await prisma.reizen.findUnique({
         where: {
-          ID: reisID as string
+          ID: reisID
         },
-        data: {
-          aanmeldingen: {
-            connect: {
-                studentID: aanmelding?.ID
+
+        include: {
+          _count: {
+            select: {
+              aanmeldingen: true
             }
           }
         }
       });
 
-    
+      if (aanmelding.ID !== user.ID)  {
 
+          LOGGER.info(`Gebruiker id komt niet overeen`);
+          res.json({message: 'Dit is niet je email'});
+      }
+      
+      
+        if (
+          aanmeldingsgegevens.maxAantal <=
+          aanmeldingsgegevens._count.aanmeldingen
+        ) {
+          LOGGER.info(`Reis met ID: ${reisID} is vol`);
+          res.json({ message: 'Reis is vol geboekt', ok: false });
+        } else {
+          console.log('niet vol');
+
+          await prisma.reizen.update({
+            where: {
+              ID: reisID
+            },
+            data: {
+              aanmeldingen: {
+                connect: {
+                  studentID: aanmelding?.ID
+                }
+              }
+            }
+          });
+          res.status(200).json({ ok: true });
+        }
+      
 
       return res.status(200).json({ ok: true });
     }

@@ -12,24 +12,26 @@ import {
   Button,
   TextInput,
   Space,
-  Table
+  Table,
+  Alert
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
-import React from 'react';
+import Router from 'next/router';
+import React, { useState } from 'react';
 import useSWR from 'swr';
 
 const ReisDetail = ({ plaats }: { plaats: reizen }) => {
+  const [errMessage, setErrMessage] = useState('');
+
   const { data: user } = useSWR('/api/user/mutate?m=withRole');
 
   // data is de reis informatie
   const { data } = useSWR(`/api/reizen/single?id=${plaats.ID}`);
   const plek = data?.plaats as reizen | any;
-
-  console.log(data)
 
   const form = useForm({
     initialValues: {
@@ -48,11 +50,16 @@ const ReisDetail = ({ plaats }: { plaats: reizen }) => {
   // student inschrijven functie
   const processForm = async (values: any, event: React.FormEvent) => {
     event.preventDefault();
-    
-    await axios.put('/api/reizen/boeken', values).then((res) => {
-      const { ok } = res.data;
 
-      console.log(ok);
+    await axios.put('/api/reizen/boeken', values).then((res) => {
+      const { ok, message } = res.data;
+
+      if (ok) {
+        Router.push(Router.asPath);
+        setErrMessage('');
+      } else {
+        setErrMessage(message);
+      }
     });
   };
 
@@ -65,7 +72,7 @@ const ReisDetail = ({ plaats }: { plaats: reizen }) => {
           <Group position="apart">
             <Title>{plek.titel}</Title>
           </Group>
-          <Badge>{plek.bestemming}</Badge>
+          <Badge>Bestemming: {plek.bestemming}</Badge>
           <Stack py="lg">
             <Text size="sm" style={{ width: '80%' }}>
               {plek.omschrijving}
@@ -89,9 +96,11 @@ const ReisDetail = ({ plaats }: { plaats: reizen }) => {
                   <td>{endDate}</td>
                   <td>{plek._count.aanmeldingen}</td>
                   <td>
-                    {plek._count.aanmeldingen >= plek.maxAantal
-                      ? <Badge color="red">Vol</Badge>
-                      : <Badge>Open</Badge>}
+                    {plek._count.aanmeldingen >= plek.maxAantal ? (
+                      <Badge color="red">Vol</Badge>
+                    ) : (
+                      <Badge>Open</Badge>
+                    )}
                   </td>
                 </tr>
               </tbody>
@@ -99,20 +108,27 @@ const ReisDetail = ({ plaats }: { plaats: reizen }) => {
           </Stack>
         </Card>
         {user?.userSession.rol === 'STUDENT' && (
-          <form onSubmit={form.onSubmit(processForm)}>
-            <TextInput
-              label="Je email"
-              type="email"
-              placeholder="12345@glr.nl"
-              required={true}
-              {...form.getInputProps('email')}
-            />
-            <TextInput hidden={true} {...form.getInputProps('reisID')} />
-            <Space h={10} />
-            <Group position="right">
-              <Button type="submit">Inschrijven</Button>
-            </Group>
-          </form>
+          <>
+            {errMessage && (
+              <Alert title="Boekings fout" color="red">
+                {errMessage}
+              </Alert>
+            )}
+            <form onSubmit={form.onSubmit(processForm)}>
+              <TextInput
+                label="Je email"
+                type="email"
+                placeholder="12345@glr.nl"
+                required={true}
+                {...form.getInputProps('email')}
+              />
+              <TextInput hidden={true} {...form.getInputProps('reisID')} />
+              <Space h={10} />
+              <Group position="right">
+                <Button type="submit">Inschrijven</Button>
+              </Group>
+            </form>
+          </>
         )}
       </Stack>
     </PageContainer>
