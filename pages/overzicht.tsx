@@ -16,6 +16,8 @@ import { reizen } from '.prisma/client';
 import dayjs from 'dayjs';
 import Link from 'next/link';
 import { string_to_slug } from '@/lib/functions';
+import axios from 'axios';
+import Router  from 'next/router';
 
 const Overzicht = () => {
   // redirect gebruiker wanneer er is ingelogd
@@ -35,6 +37,14 @@ const Overzicht = () => {
     <PageContainer>
       <Center>
         <Stack style={{ width: '40%' }}>
+          <Title order={1}>Reizen overzicht</Title>
+          {user?.userSession.rol === 'ADMIN' && (
+            <Link href={`/reis/toevoegen`} passHref={true}>
+              <Button component="a" style={{ width: 'max-content' }}>
+                Reis Toevoegen
+              </Button>
+            </Link>
+          )}
           {/* gegevens van database weergeven */}
           {plaatsen?.map((plaats: reizen) => {
             // Tijden formateren
@@ -59,7 +69,7 @@ const Overzicht = () => {
                   </Text>
                 </Stack>
                 {/* checken of gebruiker de juiste rechten heeft */}
-                {user.userSession?.rol === 'STUDENT' ? (
+                {user?.userSession?.rol === 'STUDENT' ? (
                   // Rechten voor Student
                   <Link href={`reis/${slugifyTitle}`} passHref={true}>
                     <Button component="a" size="sm">
@@ -81,7 +91,16 @@ const Overzicht = () => {
                       <Button size="sm" color="blue">
                         aanpassen
                       </Button>
-                      <Button size="sm" color="red">
+                      <Button
+                        size="sm"
+                        color="red"
+                        onClick={async () => {
+                          await axios.delete(
+                            `/api/reizen/single?id=${plaats.ID}`
+                          );
+                          Router.push('/overzicht');
+                        }}
+                      >
                         verwijderen
                       </Button>
                     </Group>
