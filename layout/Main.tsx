@@ -1,10 +1,13 @@
-import { AppShell, Button, Footer, Group } from '@mantine/core';
+import useUser from '@/lib/useUser';
+import { AppShell, Button, Footer, Group, Header, Text } from '@mantine/core';
+import axios from 'axios';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { FC } from 'react';
 
 const PageContainer: FC<any> = (props) => {
   const router = useRouter();
+  const { user } = useUser();
 
   const { children, ...customMeta } = props;
 
@@ -14,6 +17,11 @@ const PageContainer: FC<any> = (props) => {
     description: 'Examen applicatie voor reisbureau GLR',
     type: 'website',
     ...customMeta
+  };
+
+  const processLogout = async () => {
+    await axios.post('/api/auth/logout');
+    router.push('/inlog');
   };
   return (
     <>
@@ -44,8 +52,23 @@ const PageContainer: FC<any> = (props) => {
           {children}
         </AppShell>
       ) : (
-        <AppShell>
-          <Button onClick={() => history.back()}>Terug</Button>
+        <AppShell
+          header={
+            user?.isLoggedIn && (
+              <Header height={60} px=" 10rem">
+                <Group position="apart" align="center" style={{ height: 60 }}>
+                  <Text>Hallo,</Text>
+                  <Group>
+                    <Button onClick={history.back} color="dark">
+                      Terug
+                    </Button>
+                    <Button onClick={processLogout}>Logout</Button>
+                  </Group>
+                </Group>
+              </Header>
+            )
+          }
+        >
           {children}
         </AppShell>
       )}
