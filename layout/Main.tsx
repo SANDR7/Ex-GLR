@@ -1,4 +1,4 @@
-import { AppShell, Button } from '@mantine/core';
+import { AppShell, Button, Footer, Group } from '@mantine/core';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { FC } from 'react';
@@ -32,7 +32,17 @@ const PageContainer: FC<any> = (props) => {
       </Head>
 
       {router.pathname === '/' && '/overzicht' ? (
-        <AppShell>{children}</AppShell>
+        <AppShell
+          footer={
+            <Footer height={60}>
+              <Group position="center" align="center" style={{ height: 60 }}>
+                Mogeljik gemaakt door: Sander van Ast
+              </Group>
+            </Footer>
+          }
+        >
+          {children}
+        </AppShell>
       ) : (
         <AppShell>
           <Button onClick={() => history.back()}>Terug</Button>
