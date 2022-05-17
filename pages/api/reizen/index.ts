@@ -1,4 +1,5 @@
 import logger from '@/lib/logger';
+import prisma from '@/lib/prisma';
 import { sessionOptions } from '@/lib/session';
 import { withIronSessionApiRoute } from 'iron-session/next';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -9,12 +10,24 @@ export default withIronSessionApiRoute(handler, sessionOptions);
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.session.user) {
-    return res.json({
-      ...req.session.user,
-      isLoggedIn: true
-    });
+    if (req.method === 'GET') {
+      LOGGER.info('reis plaatsen ogehaald uit database');
+      const plaatsen = await prisma.reizen.findMany({
+        include: {
+          createdBy: {
+            select: {
+              adminID: true,
+            }
+          }
+        }
+      });
+
+      return res.status(200).json(plaatsen);
+    }
+
+    return res.status(500).end();
   } else {
-    return res.json({
+    return res.status(500).json({
       isLoggedIn: false
     });
   }

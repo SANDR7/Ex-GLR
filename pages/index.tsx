@@ -3,12 +3,14 @@ import {
   Box,
   Button,
   Center,
+  Grid,
   Group,
+  Text,
   Title,
   useMantineTheme
 } from '@mantine/core';
-import Link from 'next/link';
 import type { NextPage } from 'next';
+import Link from 'next/link';
 
 const Home: NextPage = () => {
   const theme = useMantineTheme();
@@ -19,30 +21,35 @@ const Home: NextPage = () => {
   // const { events } = useEvents(user, '/user/mutate');
   return (
     <PageContainer>
-      <Group grow={true}>
-        <Center>
-          <img
-            style={{ width: '80%' }}
-            src="./hero_img.svg"
-            alt="Vliegtuig met wolken"
-          />
-        </Center>
-        <Box>
-          <Title order={1} color={theme.colors.green[6]}>
-            Ga Lekker Reizen
-          </Title>
-          <p style={{ width: ' 70%' }}>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Placeat
-            molestias quo temporibus hic laborum iste maxime, deserunt officia,
-            assumenda, doloribus impedit aut sequi architecto. Velit excepturi
-            aut maiores. Fuga, vel?
-          </p>
+      <Center style={{ height: '80vh', minHeight: '50rem' }}>
+        <Grid px="lg">
+          <Grid.Col lg={6}>
+            <img
+              style={{ width: '80%' }}
+              src="./hero_img.svg"
+              alt="Vliegtuig met wolken"
+            />
+          </Grid.Col>
+          <Grid.Col lg={6}>
+            <Title order={1} style={{ color: theme.colors.glr[6] }}>
+              Ga Lekker Reizen
+            </Title>
 
-          <Link href="/inlog" passHref={true}>
-            <Button component="a">Inloggen</Button>
-          </Link>
-        </Box>
-      </Group>
+            <Text style={{ width: ' 70%' }} my="lg">
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Placeat
+              molestias quo temporibus hic laborum iste maxime, deserunt
+              officia, assumenda, doloribus impedit aut sequi architecto. Velit
+              excepturi aut maiores. Fuga, vel?
+            </Text>
+
+            <Link href="/inlog" passHref={true}>
+              <Button component="a" size="lg">
+                Inloggen
+              </Button>
+            </Link>
+          </Grid.Col>
+        </Grid>
+      </Center>
     </PageContainer>
   );
 };

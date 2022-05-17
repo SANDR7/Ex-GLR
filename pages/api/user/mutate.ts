@@ -1,4 +1,5 @@
 import logger from '@/lib/logger';
+import prisma from '@/lib/prisma';
 import { sessionOptions } from '@/lib/session';
 import { ApiUserMutations } from '@/types/server';
 import { withIronSessionApiRoute } from 'iron-session/next';
@@ -13,7 +14,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { m } = req.query as ApiUserMutations; // if m as mutation e.g. posts
 
   if (!user || user?.isLoggedIn === false || !m) {
-    LOGGER.warn(`User tried to access route without token`);
+    LOGGER.warn(
+      `Gebruiker probeerde toegang te krijgen tot deze route zonder token`
+    );
     res.status(401).end();
     return;
   }
@@ -25,17 +28,38 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   if (req.method === 'GET') {
-    if (m === 'withPosts') {
-      // fetch with posts
+    if (m === 'withRole') {
+      const userSession = await prisma.accounts.findUnique({
+        where: {
+          ID: user.ID
+        },
+        select: {
+          rol: true
+        }
+      });
+      return res.json({ userSession, ok: true });
     }
 
-    return res.status(200).json({ ok: true });
+    if (m === 'withName') {
+      const userSession = await prisma.accounts.findUnique({
+        where: {
+          ID: user.ID
+        },
+        select: {
+          student: { select: { naam: true } },
+          admin: { select: { naam: true } }
+        }
+      });
+      
+      return res.json({ userSession, ok: true });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "geen 'm' parameter meegegeven", ok: true });
   }
 
   if (req.method === 'POST') {
-    if (m === 'createPost') {
-      // create post logic
-    }
 
     return res.status(200).json({ ok: true });
   }
