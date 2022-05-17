@@ -4,6 +4,7 @@ import axios from 'axios';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { FC } from 'react';
+import useSWR from 'swr';
 
 const PageContainer: FC<any> = (props) => {
   const router = useRouter();
@@ -23,6 +24,9 @@ const PageContainer: FC<any> = (props) => {
     await axios.post('/api/auth/logout');
     router.push('/inlog');
   };
+
+  const { data } = useSWR('/api/user/mutate?m=withName');
+  const userName = data?.userSession;
   return (
     <>
       <Head>
@@ -57,7 +61,9 @@ const PageContainer: FC<any> = (props) => {
             user?.isLoggedIn && (
               <Header height={60} px=" 10rem">
                 <Group position="apart" align="center" style={{ height: 60 }}>
-                  <Text>Hallo,</Text>
+                  <Text>
+                    Hallo, {userName?.student?.naam ?? userName.admin.naam}
+                  </Text>
                   <Group>
                     <Button onClick={history.back} color="dark">
                       Terug

@@ -1,12 +1,11 @@
-import { accounts } from '.prisma/client';
 import PageContainer from '@/layout/Main';
 import useUser from '@/lib/useUser';
 import {
+  Alert,
   Button,
   Center,
   Group,
   Paper,
-  Alert,
   PasswordInput,
   Space,
   TextInput,
@@ -21,6 +20,7 @@ const Inlog = () => {
   const [submitting, setSubmitting] = useState(false);
   const [errMessage, setErrMessage] = useState('');
 
+  // redirect gebruiker wanneer er is ingelogd
   useUser({ redirectTo: '/overzicht', redirectIfFound: true });
 
   const form = useForm({
@@ -30,7 +30,7 @@ const Inlog = () => {
     },
 
     validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email')
+      // email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email')
     }
   });
 
