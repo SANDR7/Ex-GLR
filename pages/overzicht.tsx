@@ -17,20 +17,22 @@ import dayjs from 'dayjs';
 import Link from 'next/link';
 import { string_to_slug } from '@/lib/functions';
 import axios from 'axios';
-import Router  from 'next/router';
+import Router from 'next/router';
 
 const Overzicht = () => {
   // redirect gebruiker wanneer er is ingelogd
-  useUser({
+  const { user } = useUser({
     redirectTo: '/inlog',
     redirectIfFound: false
   });
+
+  
 
   // gegevens ophalen van database
   // gegevens worden client side gerenderd vanwege de datum format
   const { data: plaatsen } = useSWR('/api/reizen');
 
-  const { data: user } = useSWR('/api/user/mutate?m=withRole');
+  const { data: userRole } = useSWR('/api/user/mutate?m=withRole');
 
   // Pagina wanneer er een account is geconstateerd.
   return (
@@ -38,7 +40,7 @@ const Overzicht = () => {
       <Center>
         <Stack style={{ width: '40%' }}>
           <Title order={1}>Reizen overzicht</Title>
-          {user?.userSession.rol === 'ADMIN' && (
+          {userRole?.userSession.rol === 'ADMIN' && (
             <Link href={`/reis/toevoegen`} passHref={true}>
               <Button component="a" style={{ width: 'max-content' }}>
                 Reis Toevoegen
@@ -69,7 +71,7 @@ const Overzicht = () => {
                   </Text>
                 </Stack>
                 {/* checken of gebruiker de juiste rechten heeft */}
-                {user?.userSession?.rol === 'STUDENT' ? (
+                {userRole?.userSession?.rol === 'STUDENT' ? (
                   // Rechten voor Student
                   <Link href={`reis/${plaats.ID}`} passHref={true}>
                     <Button component="a" size="sm">
@@ -88,21 +90,31 @@ const Overzicht = () => {
                     </Group>
 
                     <Group position="right">
-                      <Button size="sm" color="blue">
-                        aanpassen
-                      </Button>
-                      <Button
-                        size="sm"
-                        color="red"
-                        onClick={async () => {
-                          await axios.delete(
-                            `/api/reizen/single?id=${plaats.ID}`
-                          );
-                          Router.push('/overzicht');
-                        }}
-                      >
-                        verwijderen
-                      </Button>
+                      {console.log(plaats.createdBy, user.ID)}
+                      {plaats.createdBy.adminID === user.ID && (
+                        <>
+                          <Link
+                            href={`/reis/aanpassen?id=${plaats.ID}`}
+                            passHref
+                          >
+                            <Button size="sm" color="blue" component="a">
+                              aanpassen
+                            </Button>
+                          </Link>
+                          <Button
+                            size="sm"
+                            color="red"
+                            onClick={async () => {
+                              await axios.delete(
+                                `/api/reizen/single?id=${plaats.ID}`
+                              );
+                              Router.push('/overzicht');
+                            }}
+                          >
+                            verwijderen
+                          </Button>
+                        </>
+                      )}
                     </Group>
                   </Group>
                 )}
