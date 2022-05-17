@@ -24,6 +24,17 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             select: {
               naam: true,
             }
+          },
+        
+          _count: {
+            select: {
+              aanmeldingen: true,
+            }
+          },
+          aanmeldingen: {
+            select: {
+              naam: true,
+            }
           }
         }
       })

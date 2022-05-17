@@ -15,6 +15,7 @@ import {
   Table
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
@@ -27,12 +28,13 @@ const ReisDetail = ({ plaats }: { plaats: reizen }) => {
   // data is de reis informatie
   const { data } = useSWR(`/api/reizen/single?id=${plaats.ID}`);
   const plek = data?.plaats as reizen | any;
-  console.log(plek);
+
+  console.log(data)
 
   const form = useForm({
     initialValues: {
       email: '',
-      reisID: plek?.ID
+      reisID: plaats?.ID
     },
     validate: {
       email: (value) =>
@@ -42,6 +44,17 @@ const ReisDetail = ({ plaats }: { plaats: reizen }) => {
 
   const beginDate = dayjs(plek?.beginDatum).format('DD MMMM YYYY');
   const endDate = dayjs(plek?.eindDatum).format('DD MMMM YYYY');
+
+  // student inschrijven functie
+  const processForm = async (values: any, event: React.FormEvent) => {
+    event.preventDefault();
+    
+    await axios.put('/api/reizen/boeken', values).then((res) => {
+      const { ok } = res.data;
+
+      console.log(ok);
+    });
+  };
 
   // data is de reis informatie
   if (!data) return <div>loading...</div>;
@@ -74,9 +87,11 @@ const ReisDetail = ({ plaats }: { plaats: reizen }) => {
                   </td>
                   <td>{beginDate}</td>
                   <td>{endDate}</td>
-                  <td>{plek.huidigAantal}</td>
+                  <td>{plek._count.aanmeldingen}</td>
                   <td>
-                    {plek.huidigAantal >= plek.maxAantal ? 'vol' : 'niet vol'}
+                    {plek._count.aanmeldingen >= plek.maxAantal
+                      ? <Badge color="red">Vol</Badge>
+                      : <Badge>Open</Badge>}
                   </td>
                 </tr>
               </tbody>
@@ -84,13 +99,15 @@ const ReisDetail = ({ plaats }: { plaats: reizen }) => {
           </Stack>
         </Card>
         {user?.userSession.rol === 'STUDENT' && (
-          <form>
+          <form onSubmit={form.onSubmit(processForm)}>
             <TextInput
               label="Je email"
               type="email"
               placeholder="12345@glr.nl"
               required={true}
+              {...form.getInputProps('email')}
             />
+            <TextInput hidden={true} {...form.getInputProps('reisID')} />
             <Space h={10} />
             <Group position="right">
               <Button type="submit">Inschrijven</Button>

@@ -9,25 +9,38 @@ const LOGGER = logger(import.meta.url);
 export default withIronSessionApiRoute(handler, sessionOptions);
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
+  let aantal = 0;
+  const { email, reisID } = req.body;
+
   if (req.session.user) {
-    if (req.method === 'GET') {
-      LOGGER.info('reis plaatsen ogehaald uit database');
-      const plaatsen = await prisma.reizen.findMany({
-        include: {
-          createdBy: {
-            select: {
-              adminID: true,
+    if (req.method === 'PUT') {
+      const aanmelding = await prisma.accounts.findUnique({
+        where: { email },
+        select: {
+            ID:true,
+        }
+      });
+
+      await prisma.reizen.update({
+        where: {
+          ID: reisID as string
+        },
+        data: {
+          aanmeldingen: {
+            connect: {
+                studentID: aanmelding?.ID
             }
           }
         }
       });
 
-      return res.status(200).json(plaatsen);
-    }
+    
 
-    return res.status(500).end();
+
+      return res.status(200).json({ ok: true });
+    }
   } else {
-    return res.status(500).json({
+    return res.json({
       isLoggedIn: false
     });
   }
