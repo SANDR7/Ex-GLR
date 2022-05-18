@@ -1,15 +1,14 @@
 import PageContainer from '@/layout/Main';
 import {
-  Box,
+  Anchor,
   Button,
   Center,
   Grid,
   Group,
+  SimpleGrid,
   Text,
   Title,
-  SimpleGrid,
   useMantineTheme,
-  Anchor
 } from '@mantine/core';
 import type { NextPage } from 'next';
 import Link from 'next/link';
@@ -17,6 +16,7 @@ import Link from 'next/link';
 const Home: NextPage = () => {
   const theme = useMantineTheme();
 
+  // basis gegvens van reisbureau
   const bureauGegevens = [
     {
       title: 'E-mail',

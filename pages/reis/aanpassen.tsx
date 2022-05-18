@@ -22,10 +22,10 @@ import Router from 'next/router';
 import { DatePicker } from '@mantine/dates';
 
 const Aanpassen = ({ plaats }: { plaats: reizen }) => {
-
   const [submitting, setSubmitting] = useState(false);
   const [errMessage, setErrMessage] = useState('');
 
+  // beginwaarden van gegevens
   const form = useForm({
     initialValues: {
       title: plaats.titel,
@@ -43,13 +43,13 @@ const Aanpassen = ({ plaats }: { plaats: reizen }) => {
       .then((res) => {
         const { ok, message } = res.data;
 
-           setSubmitting(true);
+        setSubmitting(true);
 
         // Wanneer ok === true is wordt er redirect naar reizen overzicht
         if (ok) {
           Router.push('/overzicht');
         } else {
-           setSubmitting(false);
+          setSubmitting(false);
           setErrMessage(message);
         }
       });
@@ -65,7 +65,7 @@ const Aanpassen = ({ plaats }: { plaats: reizen }) => {
               {errMessage}
             </Alert>
           )}
-          
+
           <form onSubmit={form.onSubmit(processForm)}>
             <TextInput
               label="Titel"
@@ -99,7 +99,9 @@ const Aanpassen = ({ plaats }: { plaats: reizen }) => {
             />
 
             <Group position="right" py="lg">
-              <Button type="submit">Reis Aanpassen</Button>
+              <Button type="submit" loading={submitting}>
+                Reis Aanpassen
+              </Button>
             </Group>
           </form>
         </Stack>
