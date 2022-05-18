@@ -5,5 +5,6 @@ export interface ApiUserMutations {
     | 'withName'
     | 'createReis'
     | 'udpateReis'
+    | 'student'
     | 'withNumbers';
 }

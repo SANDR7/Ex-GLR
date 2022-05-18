@@ -13,7 +13,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   const user = req.session.user as any;
   const { m } = req.query as ApiUserMutations; // if m as mutation e.g. posts
 
-
   // gegevens ophalen van verzoek van de frontend
   const {
     title,
@@ -73,6 +72,24 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   if (req.method === 'GET') {
+    if (m === 'student') {
+      const plaatsen = await prisma.studenten.findMany({
+        where: {
+          studentID: user.ID
+        },
+        include: {
+          reizen: {
+            select: {
+              titel: true,
+              bestemming: true,
+            }
+          }
+        }
+      });
+
+      return res.status(200).json({plaatsen, ok: true})
+    }
+
     return res.status(200).json({ ok: true });
   }
 

@@ -50,7 +50,7 @@ const Overzicht = () => {
           )}
           {userRole?.userSession.rol === 'STUDENT' && naam && (
             <Text color="glr" weight={700}>
-              Hallo, {naam.userSessionStudent.student[0].naam}
+              {/* Hallo, {naam.userSessionStudent.student[0].naam} */}
             </Text>
           )}
 
@@ -65,7 +65,7 @@ const Overzicht = () => {
           {/* knop voor het weergeven van ingeschreven reizen */}
           {userRole?.userSession.rol === 'STUDENT' && (
             <Link href={`/inschrijfoverzicht`} passHref={true}>
-              <Button disabled={true} style={{ width: 'max-content' }}>
+              <Button style={{ width: 'max-content' }}>
                 Ingeschreven lijst
               </Button>
             </Link>

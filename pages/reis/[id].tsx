@@ -79,7 +79,7 @@ const ReisDetail = ({ plaats }: { plaats: reizen }) => {
   // Wanneer er gegevens zijn opgehaald
   return (
     <PageContainer title={`GLR - Detail pagina van ${plek.titel}`}>
-      <Stack style={{ maxWidth: '40%', margin: 'auto' }}>
+      <Stack style={{ maxWidth: '50rem', margin: 'auto' }}>
         <Card withBorder={true}>
           <Group position="apart">
             <Title>{plek.titel}</Title>
