@@ -110,6 +110,7 @@ const ReisDetail = ({ plaats }: { plaats: reizen }) => {
             </Table>
           </Stack>
         </Card>
+        {/* weergave voor student */}
         {user?.userSession.rol === 'STUDENT' && (
           <>
             {errMessage && (
@@ -133,6 +134,7 @@ const ReisDetail = ({ plaats }: { plaats: reizen }) => {
             </form>
           </>
         )}
+        {/* weergave voor admin */}
 
         {user?.userSession.rol === 'ADMIN' && (
           <Group my="md">

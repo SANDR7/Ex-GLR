@@ -15,7 +15,7 @@ const PageContainer: FC<any> = (props) => {
     console.log('Wat doe je hier?');
     console.log('Ben je een developer?');
     console.log('druk Ctrl + J');
-    console.log('Bedank me latter ;)');
+    console.log('Bedank me later ;)');
        
     
   }, [])
