@@ -2,6 +2,7 @@ import { reizen, studenten } from '.prisma/client';
 import PageContainer from '@/layout/Main';
 import prisma from '@/lib/prisma';
 import { sessionOptions } from '@/lib/session';
+import useUser from '@/lib/useUser';
 import {
   Alert,
   Badge,
@@ -26,6 +27,12 @@ import useSWR from 'swr';
 
 const ReisDetail = ({ plaats }: { plaats: reizen }) => {
   const [errMessage, setErrMessage] = useState('');
+
+  // checken wanneer gebruiker is ingelogd || omleiden
+  useUser({
+    redirectTo: '/inlog',
+    redirectIfFound: false
+  });
 
   const { data: user } = useSWR('/api/user/mutate?m=withRole');
   const { data: userData } = useSWR(
@@ -66,8 +73,10 @@ const ReisDetail = ({ plaats }: { plaats: reizen }) => {
     });
   };
 
-  // data is de reis informatie
+  // Voordat gegevens worden opgehaald
   if (!data) return <PageContainer>loading...</PageContainer>;
+
+  // Wanneer er gegevens zijn opgehaald
   return (
     <PageContainer title={`GLR - Detail pagina van ${plek.titel}`}>
       <Stack style={{ maxWidth: '40%', margin: 'auto' }}>
