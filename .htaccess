@@ -1,4 +1,0 @@
-Options - Indexes
-<FileMatch "\.(sqlite|xml|txt|json|env)$">
-Deny from all
-</FileMatch>
