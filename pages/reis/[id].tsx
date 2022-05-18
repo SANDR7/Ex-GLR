@@ -96,6 +96,7 @@ const ReisDetail = ({ plaats }: { plaats: reizen }) => {
                   <th>Start datum</th>
                   <th>Eind datum</th>
                   <th>groep aantal</th>
+                  <th>max. aantal</th>
                   <th>status</th>
                 </tr>
               </thead>
@@ -107,6 +108,7 @@ const ReisDetail = ({ plaats }: { plaats: reizen }) => {
                   <td>{beginDate}</td>
                   <td>{endDate}</td>
                   <td>{plek._count.aanmeldingen}</td>
+                  <td>{plek.maxAantal}</td>
                   <td>
                     {plek._count.aanmeldingen >= plek.maxAantal ? (
                       <Badge color="red">Vol</Badge>
