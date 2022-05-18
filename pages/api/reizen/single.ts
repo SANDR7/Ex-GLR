@@ -57,7 +57,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       return res.status(200).json({ ok: true });
     }
   } else {
-    return res.status(500).json({
+    return res.json({
+      ok: false,
       isLoggedIn: false
     });
   }
