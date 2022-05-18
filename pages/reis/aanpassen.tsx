@@ -58,7 +58,7 @@ const Aanpassen = ({ plaats }: { plaats: reizen }) => {
   return (
     <PageContainer>
       <Center>
-        <Stack style={{ width: '40%' }}>
+        <Stack style={{ width: '50rem' }}>
           <Title order={1}>Reis Aanpassen</Title>
           {errMessage && (
             <Alert title="Inlog fout" color="red">

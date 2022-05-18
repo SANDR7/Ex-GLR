@@ -56,7 +56,7 @@ const Aanmaken = () => {
   return (
     <PageContainer>
       <Center>
-        <Stack style={{ width: '40%' }}>
+        <Stack style={{ width: '50rem' }}>
           <Title order={1}>Reis Toevoegen</Title>
 
           <form onSubmit={form.onSubmit(processForm)}>
