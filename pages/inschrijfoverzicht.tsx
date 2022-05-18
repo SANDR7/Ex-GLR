@@ -11,6 +11,8 @@ const InschrijfLijst = () => {
     redirectIfFound: false
   });
   const { data: plaatsen } = useSWR('/api/reizen/mutate?m=student');
+
+  if (!plaatsen) return <PageContainer>Loading...</PageContainer>;
   return (
     <PageContainer>
       <Center>
@@ -25,8 +27,8 @@ const InschrijfLijst = () => {
               </tr>
             </thead>
             <tbody>
-              {plaatsen.plaatsen[0].reizen && plaatsen.plaatsen[0].reizen?.map(
-                (plaats: any, idx: number) => {
+              {plaatsen.plaatsen[0].reizen &&
+                plaatsen.plaatsen[0].reizen?.map((plaats: any, idx: number) => {
                   const beginDate = dayjs(plaats.beginDatum).format(
                     'DD MMMM YYYY'
                   );
@@ -42,8 +44,7 @@ const InschrijfLijst = () => {
                       <td>{endDate}</td>
                     </tr>
                   );
-                }
-              )}
+                })}
             </tbody>
           </Table>
         </Stack>
