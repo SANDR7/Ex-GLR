@@ -38,7 +38,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (!findUser) {
       LOGGER.error(`Onbekend account: ${email}`);
       return res.json({
-        message: `Geen account met email: ${email}`,
+        message: `Gegevens met email: ${email} is incorrect`,
         ok: false
       });
     }

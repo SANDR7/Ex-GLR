@@ -7,6 +7,7 @@ import {
   Group,
   Text,
   Title,
+  SimpleGrid,
   useMantineTheme
 } from '@mantine/core';
 import type { NextPage } from 'next';
@@ -14,11 +15,13 @@ import Link from 'next/link';
 
 const Home: NextPage = () => {
   const theme = useMantineTheme();
-  // when user is logged in
-  // const { user, mutateUser } = useUser();
-  // when user is logged in || redirectIfFound -> login page = true home page = false
-  // const { user, mutateUser } = useUser({redirectIfFound: true, redirectTo: '/dashboard'});
-  // const { events } = useEvents(user, '/user/mutate');
+
+  const bureauGegevens = [
+    { title: 'Email', description: 'hello@glr.nl' },
+    { title: 'Phone', description: '088 200 1500' },
+    { title: 'Address', description: 'Heer Bokelweg 255, 3032 AD Rotterdam' }
+  ];
+
   return (
     <PageContainer>
       <Center style={{ height: '80vh', minHeight: '50rem' }}>
@@ -47,6 +50,18 @@ const Home: NextPage = () => {
                 Inloggen
               </Button>
             </Link>
+            <SimpleGrid
+              cols={2}
+              breakpoints={[{ maxWidth: 755, cols: 1 }]}
+              style={{ maxWidth: 400, marginTop: ' 10rem' }}
+            >
+              {bureauGegevens.map((item, idx) => (
+                <>
+                  <Group key={idx}>{item.title}</Group>
+                  <Group>{item.description}</Group>
+                </>
+              ))}
+            </SimpleGrid>
           </Grid.Col>
         </Grid>
       </Center>

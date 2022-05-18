@@ -2,9 +2,8 @@ import useUser from '@/lib/useUser';
 import { AppShell, Button, Footer, Group, Header, Text } from '@mantine/core';
 import axios from 'axios';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
+import { Router, useRouter } from 'next/router';
 import React, { FC } from 'react';
-import useSWR from 'swr';
 
 const PageContainer: FC<any> = (props) => {
   const router = useRouter();
@@ -41,14 +40,19 @@ const PageContainer: FC<any> = (props) => {
         <meta name="twitter:description" content={meta.description} />
       </Head>
 
-      {router.pathname === '/' && '/overzicht' ? (
+      {user?.isLoggedIn ? (
         <AppShell
-          footer={
-            <Footer height={60}>
-              <Group position="center" align="center" style={{ height: 60 }}>
-                Mogeljik gemaakt door: Sander van Ast
+          header={
+            <Header height={60} px=" 10rem">
+              <Group position="apart" align="center" style={{ height: 60 }}>
+                {/* <Group> */}
+                <Button onClick={() => history.back()} color="dark">
+                  Terug
+                </Button>
+                <Button onClick={processLogout}>Logout</Button>
+                {/* </Group> */}
               </Group>
-            </Footer>
+            </Header>
           }
         >
           {children}
@@ -56,18 +60,13 @@ const PageContainer: FC<any> = (props) => {
       ) : (
         <AppShell
           header={
-            user?.isLoggedIn && (
-              <Header height={60} px=" 10rem">
-                <Group position="apart" align="center" style={{ height: 60 }}>
-                  {/* <Group> */}
-                  <Button onClick={() => history.back()} color="dark">
-                    Terug
-                  </Button>
-                  <Button onClick={processLogout}>Logout</Button>
-                  {/* </Group> */}
-                </Group>
-              </Header>
-            )
+            <Header height={60} px=" 10rem">
+              <Group align="center" style={{ height: 60 }}>
+                <Button onClick={() => router.push('/')} color="dark">
+                  Home
+                </Button>
+              </Group>
+            </Header>
           }
         >
           {children}
