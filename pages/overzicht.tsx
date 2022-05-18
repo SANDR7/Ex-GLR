@@ -1,5 +1,6 @@
 import PageContainer from '@/layout/Main';
 import useUser from '@/lib/useUser';
+import axios from 'axios';
 import React from 'react';
 import useSWR from 'swr';
 import {
@@ -12,11 +13,10 @@ import {
   Text,
   Title
 } from '@mantine/core';
-import { reizen } from '.prisma/client';
 import dayjs from 'dayjs';
 import Link from 'next/link';
-import axios from 'axios';
 import Router from 'next/router';
+import { reizen } from '.prisma/client';
 
 const Overzicht = () => {
   // checken wanneer gebruiker is ingelogd || omleiden
@@ -54,6 +54,7 @@ const Overzicht = () => {
             </Text>
           )}
 
+          {/* Nieuwe reis aanmaken */}
           {userRole?.userSession.rol === 'ADMIN' && (
             <Link href={`/reis/toevoegen`} passHref={true}>
               <Button component="a" style={{ width: 'max-content' }}>
@@ -61,8 +62,16 @@ const Overzicht = () => {
               </Button>
             </Link>
           )}
+          {/* knop voor het weergeven van ingeschreven reizen */}
+          {userRole?.userSession.rol === 'STUDENT' && (
+            <Link href={`/inschrijfoverzicht`} passHref={true}>
+              <Button disabled={true} style={{ width: 'max-content' }}>
+                Ingeschreven lijst
+              </Button>
+            </Link>
+          )}
           {/* gegevens van database weergeven */}
-          {plaatsen?.map((plaats: reizen | any) => {
+          {plaatsen?.map((plaats: reizen) => {
             // Tijden formateren
             const beginDate = dayjs(plaats.beginDatum).format('DD MMM YY');
             const endDate = dayjs(plaats.eindDatum).format('DD MMM YY');
