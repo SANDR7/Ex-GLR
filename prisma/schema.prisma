@@ -16,7 +16,7 @@ model accounts {
   ID         String          @id @default(cuid())
   email      String          @unique
   wachtwoord String
-  student    studenten[]
+  student    studenten?
   admin      administrator[]
   rol        String          @default("STUDENT")
 }
