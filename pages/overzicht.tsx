@@ -50,7 +50,7 @@ const Overzicht = () => {
           )}
           {userRole?.userSession.rol === 'STUDENT' && naam && (
             <Text color="glr" weight={700}>
-              {/* Hallo, {naam.userSessionStudent.student[0].naam} */}
+              Hallo, {naam.userSessionStudent.student.naam}
             </Text>
           )}
 

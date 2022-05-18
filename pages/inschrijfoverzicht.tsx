@@ -2,7 +2,6 @@ import PageContainer from '@/layout/Main';
 import useUser from '@/lib/useUser';
 import { Center, Stack, Table } from '@mantine/core';
 import dayjs from 'dayjs';
-import Router from 'next/router';
 import React from 'react';
 import useSWR from 'swr';
 
@@ -31,7 +30,7 @@ const InschrijfLijst = () => {
               </tr>
             </thead>
             <tbody>
-              {plaatsen.plaatsen[0].reizen?.map((plaats, idx: number) => {
+              {plaatsen.plaatsen[0].reizen?.map((plaats: any, idx: number) => {
                 const beginDate = dayjs(plaats.beginDatum).format(
                   'DD MMMM YYYY'
                 );
