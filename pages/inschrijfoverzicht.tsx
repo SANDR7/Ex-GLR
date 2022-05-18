@@ -10,12 +10,8 @@ const InschrijfLijst = () => {
     redirectTo: '/inlog',
     redirectIfFound: false
   });
-
   const { data: plaatsen } = useSWR('/api/reizen/mutate?m=student');
-
-
-  const { data: userRole } = useSWR('/api/user/mutate?m=withRole');
-  return userRole?.userSession.rol === 'STUDENT' ? (
+  return (
     <PageContainer>
       <Center>
         <Stack style={{ width: ' 50rem' }}>
@@ -48,13 +44,12 @@ const InschrijfLijst = () => {
                   );
                 }
               )}
-              {/* map tr -> td */}
             </tbody>
           </Table>
         </Stack>
       </Center>
     </PageContainer>
-  ) : null;
+  );
 };
 
 export default InschrijfLijst;
