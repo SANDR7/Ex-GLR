@@ -54,7 +54,7 @@ const Aanmaken = () => {
   };
 
   return (
-    <PageContainer>
+    <PageContainer title={`GLR - reis aanmaken`}>
       <Center>
         <Stack style={{ width: '50rem' }}>
           <Title order={1}>Reis Toevoegen</Title>

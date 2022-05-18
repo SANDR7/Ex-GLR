@@ -38,7 +38,7 @@ const Overzicht = () => {
 
   // Pagina wanneer er een account is geconstateerd.
   return (
-    <PageContainer>
+    <PageContainer title={`GLR - reizen overzicht`}>
       <Center>
         <Stack style={{ width: '50rem' }}>
           <Title order={1}>Reizen overzicht</Title>

@@ -56,7 +56,7 @@ const Aanpassen = ({ plaats }: { plaats: reizen }) => {
   };
 
   return (
-    <PageContainer>
+    <PageContainer title={`GLR - ${plaats.titel} aanpassen`}>
       <Center>
         <Stack style={{ width: '50rem' }}>
           <Title order={1}>Reis Aanpassen</Title>

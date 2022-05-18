@@ -9,7 +9,9 @@ import {
   PasswordInput,
   Space,
   TextInput,
-  Title
+  Text,
+  Title,
+  Stack
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import axios from 'axios';
@@ -59,7 +61,10 @@ const Inlog = () => {
       <Center mt="10rem">
         <Paper shadow="sm" p="lg" withBorder={true} style={{ width: ' 40rem' }}>
           <Center>
-            <Title>Welkom</Title>
+            <Stack>
+              <Title>Welkom Reiziger!</Title>
+              <Text>Kijk wat er allemaal wordt aangeboden</Text>
+            </Stack>
           </Center>
           {/* Als er een error komt wordt het weer gegeven */}
           {errMessage && (
