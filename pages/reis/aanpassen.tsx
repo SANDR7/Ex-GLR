@@ -20,10 +20,17 @@ import { GetServerSideProps } from 'next';
 import React, { useState } from 'react';
 import Router from 'next/router';
 import { DatePicker } from '@mantine/dates';
+import useUser from '@/lib/useUser';
 
 const Aanpassen = ({ plaats }: { plaats: reizen }) => {
   const [submitting, setSubmitting] = useState(false);
   const [errMessage, setErrMessage] = useState('');
+
+  // checken wanneer gebruiker is ingelogd || omleiden
+  useUser({
+    redirectTo: '/inlog',
+    redirectIfFound: false
+  });
 
   // beginwaarden van gegevens
   const form = useForm({

@@ -143,7 +143,6 @@ const ReisDetail = ({ plaats }: { plaats: reizen }) => {
             </form>
           </>
         )}
-        {/* weergave voor admin */}
 
         {user?.userSession.rol === 'ADMIN' && (
           <Group my="md">
