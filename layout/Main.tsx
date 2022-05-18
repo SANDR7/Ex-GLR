@@ -3,11 +3,22 @@ import { AppShell, Button, Footer, Group, Header, Text } from '@mantine/core';
 import axios from 'axios';
 import Head from 'next/head';
 import { Router, useRouter } from 'next/router';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 
 const PageContainer: FC<any> = (props) => {
   const router = useRouter();
   const { user } = useUser();
+  useEffect(() => {
+
+    // Dark mode easter egg
+    console.log('Hey!')
+    console.log('Wat doe je hier?');
+    console.log('Ben je een developer?');
+    console.log('druk Ctrl + J');
+    console.log('Bedank me latter ;)');
+       
+    
+  }, [])
 
   const { children, ...customMeta } = props;
 
