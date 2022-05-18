@@ -128,7 +128,7 @@ const Overzicht = () => {
                               await axios.delete(
                                 `/api/reizen/single?id=${plaats.ID}`
                               );
-                              Router.push('/overzicht');
+                              Router.push(Router.asPath);
                             }}
                           >
                             verwijderen
