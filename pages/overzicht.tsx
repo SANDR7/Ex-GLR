@@ -111,12 +111,11 @@ const Overzicht = () => {
                     </Group>
 
                     <Group position="right">
-                      {console.log(plaats.createdBy, user.ID)}
-                      {plaats.createdBy.adminID === user.ID && (
+                      {plaats?.createdBy.adminID === user.ID && (
                         <>
                           <Link
                             href={`/reis/aanpassen?id=${plaats.ID}`}
-                            passHref
+                            passHref={true}
                           >
                             <Button size="sm" color="blue" component="a">
                               aanpassen
