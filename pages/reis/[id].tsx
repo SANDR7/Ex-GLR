@@ -1,19 +1,19 @@
-import { reizen } from '.prisma/client';
+import { reizen, studenten } from '.prisma/client';
 import PageContainer from '@/layout/Main';
 import prisma from '@/lib/prisma';
 import { sessionOptions } from '@/lib/session';
 import {
-  Stack,
+  Alert,
+  Badge,
+  Button,
   Card,
   Group,
-  Title,
-  Badge,
-  Text,
-  Button,
-  TextInput,
   Space,
+  Stack,
   Table,
-  Alert
+  Text,
+  TextInput,
+  Title
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import axios from 'axios';
@@ -28,6 +28,9 @@ const ReisDetail = ({ plaats }: { plaats: reizen }) => {
   const [errMessage, setErrMessage] = useState('');
 
   const { data: user } = useSWR('/api/user/mutate?m=withRole');
+  const { data: userData } = useSWR(
+    `/api/user/mutate?m=withNumbers&p=${plaats.ID}`
+  );
 
   // data is de reis informatie
   const { data } = useSWR(`/api/reizen/single?id=${plaats.ID}`);
@@ -129,6 +132,30 @@ const ReisDetail = ({ plaats }: { plaats: reizen }) => {
               </Group>
             </form>
           </>
+        )}
+
+        {user?.userSession.rol === 'ADMIN' && (
+          <Group my="md">
+            <Title>Ingeschreven lijst</Title>
+            <Table>
+              <thead>
+                <tr>
+                  <th>Naam</th>
+                  <th>Studentnummer</th>
+                </tr>
+              </thead>
+              <tbody>
+                {userData?.userSession?.aanmeldingen?.map(
+                  (aanmelding: studenten) => (
+                    <tr key={aanmelding.studentNummer}>
+                      <td>{aanmelding.naam}</td>
+                      <td>{aanmelding.studentNummer}</td>
+                    </tr>
+                  )
+                )}
+              </tbody>
+            </Table>
+          </Group>
         )}
       </Stack>
     </PageContainer>

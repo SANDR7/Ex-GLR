@@ -40,6 +40,26 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       return res.json({ userSession, ok: true });
     }
 
+    if (m === 'withNumbers') {
+      const { p } = req.query;
+
+      const userSession = await prisma.reizen.findFirst({
+        where: {
+          ID: p as string
+        },
+        select: {
+          aanmeldingen: {
+            select: {
+              naam: true,
+              studentNummer: true
+            }
+          }
+        }
+      });
+
+      res.status(200).json({ ok: true, userSession });
+    }
+
     if (m === 'withName') {
       const userSession = await prisma.accounts.findUnique({
         where: {
