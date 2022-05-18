@@ -19,11 +19,13 @@ import React, { useState } from 'react';
 const Aanmaken = () => {
   const [submitting, setSubmitting] = useState(false);
 
+  // checken wanneer gebruiker is ingelogd || omleiden
   useUser({
     redirectTo: '/inlog',
     redirectIfFound: false
   });
 
+  // beginwaarden van gegevens
   const form = useForm({
     initialValues: {
       title: '',

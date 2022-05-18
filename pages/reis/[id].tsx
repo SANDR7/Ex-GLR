@@ -67,7 +67,7 @@ const ReisDetail = ({ plaats }: { plaats: reizen }) => {
   };
 
   // data is de reis informatie
-  if (!data) return <div>loading...</div>;
+  if (!data) return <PageContainer>loading...</PageContainer>;
   return (
     <PageContainer title={`GLR - Detail pagina van ${plek.titel}`}>
       <Stack style={{ maxWidth: '40%', margin: 'auto' }}>

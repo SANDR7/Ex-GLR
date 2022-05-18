@@ -17,6 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
 
+    // Dark mode schakelaar
   useHotkeys([['mod+J', () => toggleColorScheme()]]);
   return (
     <ColorSchemeProvider

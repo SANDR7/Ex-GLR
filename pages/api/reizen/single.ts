@@ -11,10 +11,12 @@ export default withIronSessionApiRoute(handler, sessionOptions);
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
 
+  // kijken of er een sessie
   if (req.session.user) {
     if (req.method === 'GET') {
       LOGGER.info(`reis met id: ${id} opgehaald uit database`);
 
+      // reis details zoeken in database
       const plaats = await prisma.reizen.findUnique({
         where: {
           ID: id as string
@@ -45,6 +47,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'DELETE') {
       LOGGER.info('Reis successvol verwijderd');
 
+      // query om reis te verwijderen
       await prisma.reizen.delete({
         where: {
           ID: id as string

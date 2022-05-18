@@ -61,17 +61,25 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     }
 
     if (m === 'withName') {
-      const userSession = await prisma.accounts.findUnique({
+      const userSessionStudent = await prisma.accounts.findUnique({
         where: {
           ID: user.ID
         },
         select: {
-          student: { select: { naam: true } },
+          student: { select: { naam: true } }
+        }
+      });
+      const userSessionAdmin = await prisma.accounts.findUnique({
+        where: {
+          ID: user.ID
+        },
+        select: {
           admin: { select: { naam: true } }
         }
       });
+      LOGGER.info('namen successvol gestuurd');
 
-      return res.json({ userSession, ok: true });
+      return res.json({ userSessionStudent, userSessionAdmin, ok: true });
     }
 
     return res

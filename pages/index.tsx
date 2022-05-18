@@ -8,7 +8,8 @@ import {
   Text,
   Title,
   SimpleGrid,
-  useMantineTheme
+  useMantineTheme,
+  Anchor
 } from '@mantine/core';
 import type { NextPage } from 'next';
 import Link from 'next/link';
@@ -17,9 +18,17 @@ const Home: NextPage = () => {
   const theme = useMantineTheme();
 
   const bureauGegevens = [
-    { title: 'Email', description: 'hello@glr.nl' },
-    { title: 'Phone', description: '088 200 1500' },
-    { title: 'Address', description: 'Heer Bokelweg 255, 3032 AD Rotterdam' }
+    {
+      title: 'E-mail',
+      description: 'hello@glr.nl',
+      link: 'mailto:hello@glr.nl'
+    },
+    { title: 'Telefoon', description: '088 200 1500', link: 'tel:0882001500' },
+    {
+      title: 'Adres',
+      description: 'Heer Bokelweg 255, 3032 AD Rotterdam',
+      link: 'https://goo.gl/maps/SjTmHL81hSXps1g1A'
+    }
   ];
 
   return (
@@ -58,7 +67,9 @@ const Home: NextPage = () => {
               {bureauGegevens.map((item, idx) => (
                 <>
                   <Group key={idx}>{item.title}</Group>
-                  <Group>{item.description}</Group>
+                  <Anchor href={item.link} target="_blank">
+                    <Group>{item.description}</Group>
+                  </Anchor>
                 </>
               ))}
             </SimpleGrid>

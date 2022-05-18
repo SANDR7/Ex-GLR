@@ -3,6 +3,7 @@ import PageContainer from '@/layout/Main';
 import prisma from '@/lib/prisma';
 import { sessionOptions } from '@/lib/session';
 import {
+  Alert,
   Button,
   Center,
   Group,
@@ -16,11 +17,15 @@ import { useForm } from '@mantine/form';
 import axios from 'axios';
 import { withIronSessionSsr } from 'iron-session/next';
 import { GetServerSideProps } from 'next';
-import React from 'react';
+import React, { useState } from 'react';
 import Router from 'next/router';
 import { DatePicker } from '@mantine/dates';
 
 const Aanpassen = ({ plaats }: { plaats: reizen }) => {
+
+  const [submitting, setSubmitting] = useState(false);
+  const [errMessage, setErrMessage] = useState('');
+
   const form = useForm({
     initialValues: {
       title: plaats.titel,
@@ -38,14 +43,14 @@ const Aanpassen = ({ plaats }: { plaats: reizen }) => {
       .then((res) => {
         const { ok, message } = res.data;
 
-        //    setSubmitting(true);
+           setSubmitting(true);
 
         // Wanneer ok === true is wordt er redirect naar reizen overzicht
         if (ok) {
           Router.push('/overzicht');
         } else {
-          //  setSubmitting(false);
-          // setErrMessage(message);
+           setSubmitting(false);
+          setErrMessage(message);
         }
       });
   };
@@ -55,7 +60,12 @@ const Aanpassen = ({ plaats }: { plaats: reizen }) => {
       <Center>
         <Stack style={{ width: '40%' }}>
           <Title order={1}>Reis Aanpassen</Title>
-
+          {errMessage && (
+            <Alert title="Inlog fout" color="red">
+              {errMessage}
+            </Alert>
+          )}
+          
           <form onSubmit={form.onSubmit(processForm)}>
             <TextInput
               label="Titel"

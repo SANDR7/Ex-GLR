@@ -10,6 +10,7 @@ export default withIronSessionApiRoute(handler, sessionOptions);
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(500).end();
 
+  // kijken of er een sessie is
   if (req.session.user) {
     LOGGER.info('Gebruiker is uitgelogd');
 

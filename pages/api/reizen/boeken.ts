@@ -41,14 +41,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         res.json({ message: 'Dit is niet je email' });
       }
 
+      // maximun aantal personen vergelijken
       if (
         aanmeldingsgegevens.maxAantal <= aanmeldingsgegevens._count.aanmeldingen
       ) {
         LOGGER.info(`Reis met ID: ${reisID} is vol`);
         res.json({ message: 'Reis is vol geboekt', ok: false });
       } else {
-        console.log('niet vol');
-
+        LOGGER.info(`Reis met ${reisID} is vol`);
         await prisma.reizen.update({
           where: {
             ID: reisID

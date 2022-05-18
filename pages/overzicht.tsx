@@ -19,7 +19,7 @@ import axios from 'axios';
 import Router from 'next/router';
 
 const Overzicht = () => {
-  // redirect gebruiker wanneer er is ingelogd
+  // checken wanneer gebruiker is ingelogd || omleiden
   const { user } = useUser({
     redirectTo: '/inlog',
     redirectIfFound: false
@@ -30,13 +30,30 @@ const Overzicht = () => {
   const { data: plaatsen } = useSWR('/api/reizen');
 
   const { data: userRole } = useSWR('/api/user/mutate?m=withRole');
+  const { data: naam } = useSWR('/api/user/mutate?m=withName');
+
+  // pagina weergeven wanneer er geen gegevens zijn
+  if (!userRole && !plaatsen && !naam)
+    return <PageContainer>loading...</PageContainer>;
 
   // Pagina wanneer er een account is geconstateerd.
   return (
     <PageContainer>
       <Center>
-        <Stack>
+        <Stack style={{ width: '50rem' }}>
           <Title order={1}>Reizen overzicht</Title>
+          {/* Naam van gebruiker laten zien */}
+          {userRole?.userSession.rol === 'ADMIN' && naam && (
+            <Text color="glr" weight={700}>
+              Hallo, {naam.userSessionAdmin.admin[0].naam}
+            </Text>
+          )}
+          {userRole?.userSession.rol === 'STUDENT' && naam && (
+            <Text color="glr" weight={700}>
+              Hallo, {naam.userSessionStudent.student[0].naam}
+            </Text>
+          )}
+
           {userRole?.userSession.rol === 'ADMIN' && (
             <Link href={`/reis/toevoegen`} passHref={true}>
               <Button component="a" style={{ width: 'max-content' }}>

@@ -10,6 +10,7 @@ export default withIronSessionApiRoute(handler, sessionOptions);
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.session.user) {
+    // informatie van reizen ophalen
     if (req.method === 'GET') {
       LOGGER.info('reis plaatsen ogehaald uit database');
       const plaatsen = await prisma.reizen.findMany({

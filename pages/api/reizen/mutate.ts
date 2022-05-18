@@ -13,6 +13,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   const user = req.session.user as any;
   const { m } = req.query as ApiUserMutations; // if m as mutation e.g. posts
 
+
+  // gegevens ophalen van verzoek van de frontend
   const {
     title,
     description,
@@ -41,6 +43,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   // ============================================================
 
   if (req.method === 'PUT') {
+    // gegevens updaten
     if (m === 'udpateReis') {
       try {
         await prisma.reizen.update({
@@ -74,6 +77,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   if (req.method === 'POST') {
+    // gegevens aanmaken / toevoegen
     if (m === 'createReis') {
       try {
         await prisma.administrator.update({

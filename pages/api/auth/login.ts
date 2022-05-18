@@ -15,6 +15,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     return res.status(405).json({ message: 'Ongeldig verzoek' });
   }
 
+  // gegevens ophalen van verzoek van de frontend
   const { email, password }: { email: string; password: string } = req.body;
 
   const loggedInUser = await prisma.accounts.findFirst({
@@ -22,6 +23,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     select: { ID: true }
   });
   try {
+    // gegeven opzoeken in database
     const findUser = await prisma.accounts.findFirst({
       where: {
         email,
@@ -38,11 +40,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (!findUser) {
       LOGGER.error(`Onbekend account: ${email}`);
       return res.json({
-        message: `Gegevens met email: ${email} is incorrect`,
+        message: `Gegevens met email: ${email} zijn incorrect`,
         ok: false
       });
     }
 
+    // Sessie aan gebruiker geven met ID
     req.session.user = loggedInUser as accounts;
     await req.session.save();
 
