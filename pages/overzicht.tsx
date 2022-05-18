@@ -71,7 +71,7 @@ const Overzicht = () => {
             </Link>
           )}
           {/* gegevens van database weergeven */}
-          {plaatsen?.map((plaats: reizen) => {
+          {plaatsen?.map((plaats: reizen | any) => {
             // Tijden formateren
             const beginDate = dayjs(plaats.beginDatum).format('DD MMM YY');
             const endDate = dayjs(plaats.eindDatum).format('DD MMM YY');
