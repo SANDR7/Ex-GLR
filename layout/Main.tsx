@@ -2,7 +2,7 @@ import useUser from '@/lib/useUser';
 import { AppShell, Button, Footer, Group, Header, Text } from '@mantine/core';
 import axios from 'axios';
 import Head from 'next/head';
-import { Router, useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 import React, { FC, useEffect } from 'react';
 
 const PageContainer: FC<any> = (props) => {
@@ -32,7 +32,7 @@ const PageContainer: FC<any> = (props) => {
 
   const processLogout = async () => {
     await axios.post('/api/auth/logout');
-    router.push('/inlog');
+    Router.push('/inlog');
   };
 
   return (
